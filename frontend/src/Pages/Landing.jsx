@@ -3,12 +3,16 @@ import { TypewriterEffect } from '../components/typewriter-effect';
 import { HoverBorderGradient } from '../components/hover-border-gradient';
 import { useNavigate } from 'react-router-dom';
 
+
+
+
+
 function Landing() {
   const navigate = useNavigate();
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <div className="flex flex-col items-center justify-center space-y-8 mt-[-10vh]">
+      <div className="flex flex-col items-center justify-center space-y-8 mt-[-15vh]">
         <TypewriterEffect
           words={[
             { text: "Elevate " },
@@ -18,20 +22,21 @@ function Landing() {
             { text: "Experience " },
             { text: "With " },
             { text: "Fusion " },
-            { text: ", " },
-            { text: "Where " },
-            { text: "Ideas " },
-            { text: "Merge " },
-            { text: "and " },
-            { text: "Stories " },
-            { text: "Evolve " },
           ]}
+          textStyle={{ fontSize: '2rem' }} // Adjust the font size
         />
-        <HoverBorderGradient >
-          <button onClick={() => navigate('/auth')}>Get Started</button>
-         
-        </HoverBorderGradient>
+        <div className="mt-4"> {/* Add margin to create a gap */}
+          <HoverBorderGradient>
+            <button 
+              className="px-6 py-3 text-lg" // Increase padding and font size for a larger button
+              onClick={() => navigate('/auth')}
+            >
+              Get Started
+            </button>
+          </HoverBorderGradient>
+        </div>
       </div>
+     
     </div>
   );
 }
