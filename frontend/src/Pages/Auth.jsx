@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Auth() {
-  const { login, register } = useKindeAuth();
-
+ 
+  const navigate = useNavigate()
   return (
     <div className="flex items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8" style={{ height: 'calc(100vh - 100px)' }}>
       <div className="mx-auto w-full max-w-md space-y-8">
@@ -16,9 +16,13 @@ export default function Auth() {
           </p>
         </div>
         <div className="space-y-4">
-          <Button className="w-full" onClick={login}>Create Your Account</Button>
-          <Button variant="outline" onClick={register} className="w-full">
+          <Button className="w-full" onClick={() => navigate('/signup')}>Create Your Account</Button>
+          <Button variant="outline"  className="w-full" onClick={() => navigate('/signin')}>
             Login
+          </Button>
+
+          <Button variant="outline"  className="w-full" onClick={() => navigate('/home')}>
+            Or Enter As Guest
           </Button>
         </div>
       </div>

@@ -1,29 +1,17 @@
-import React from 'react';
-import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
-import { CircleUser } from 'lucide-react';
 
-export default function Header() {
-  const { user, isAuthenticated, isLoading, logout } = useKindeAuth();
 
-  // Use a ternary operator for conditional rendering
+const Header = () => {
+ 
+
+ 
+
   return (
     <header className="flex h-16 w-full items-center justify-between px-4 md:px-6 bg-white">
-      <a href="#" className="flex items-center gap-2" prefetch={false}>
+      <a href="#" className="flex items-center gap-2">
         <FlameIcon className="h-6 w-6" />
         <span className="font-bold text-3xl">Fusion</span>
+        
       </a>
-
-      {isLoading && <p>Loading...</p>}
-
-      {isAuthenticated ? (
-        <div className="flex items-center gap-4">
-          <CircleUser className="h-10 w-10" />
-          <button onClick={logout} className="px-4 py-2 bg-black text-white rounded-md">
-            Logout
-          </button>
-         
-        </div>
-      ) : null}
     </header>
   );
 }
@@ -46,3 +34,5 @@ function FlameIcon(props) {
     </svg>
   );
 }
+
+export default Header;

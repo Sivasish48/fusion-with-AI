@@ -1,34 +1,26 @@
 import "./index.css";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Landing from "./Pages/Landing";
-import Dashboard from "./components/dashboard";
 import Auth from "./Pages/Auth";
 import Header from "./components/header";
-import ProtectedRoutes from "./utils/ProtectedRoutes";
-import { KindeProvider } from "@kinde-oss/kinde-auth-react";
+import SIgnin from "./Pages/SIgnin";
+import SIgnup from "./Pages/SIgnup";
+import Home from "./Pages/Home";
 const App = () => {
- 
- return (
+  return (
     <Router>
-      <KindeProvider
-        clientId="90a6a184e4fe45b9912c0f31dd838b53"
-        domain="https://suvam.kinde.com"
-        redirectUri="http://localhost:5173/dashboard" // The URI the user is redirected to after authentication
-        logoutUri="http://localhost:5173/" // The URI the user is redirected to after logout
-      >
-        <Header />
-        
-          <Routes>
-          <Route path="/" element={<Landing />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route element={<ProtectedRoutes />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-            </Route>
-          </Routes>  
-        
-      </KindeProvider>
+      <Header /> {/* Render Header globally */}
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/signin" element={<SIgnin />} />
+        <Route path="/signup" element={<SIgnup />} />
+        <Route path="/home" element={<Home />} />
+        {/* Add a catch-all route for unmatched paths */}
+        {/* <Route path="*" element={<NotFound />} /> Replace with your Not Found component */}
+      </Routes>
     </Router>
   );
-}
+};
 
 export default App;
