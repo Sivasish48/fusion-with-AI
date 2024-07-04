@@ -20,7 +20,7 @@ export default function Component() {
             <Input id="password" type="password" placeholder="Enter your password" className="animate-pulse" />
           </div>
           <Button type="submit" className="w-full animate-bounce bg-primary text-primary-foreground">
-            Sign Up
+            Sign In
           </Button>
         </form>
         <div className="mt-4 text-center text-sm text-muted-foreground">

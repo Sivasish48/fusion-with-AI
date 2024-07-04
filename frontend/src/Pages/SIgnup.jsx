@@ -1,23 +1,54 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
-export default function Component() {
+export default function Signup() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onHandleClick = async (e) => {
+    e.preventDefault();
+         await fetch("http://localhost:3000/register", {
+        method: "POST",
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+
+ 
+
   return (
     <div className="flex h-screen w-full items-start justify-center mt-6 bg-background">
-      <div className="w-full  mt-16 max-w-md rounded-2xl bg-card p-6 shadow-xl transition-all duration-300 hover:shadow-2xl">
+      <div className="w-full mt-16 max-w-md rounded-2xl bg-card p-6 shadow-xl transition-all duration-300 hover:shadow-2xl">
         <div className="mb-6 flex items-center justify-center">
           <FlameIcon className="h-6 w-6" />
           <span className="ml-2 text-2xl font-bold">FUSION</span>
         </div>
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={onHandleClick}>
           <div className="grid gap-2">
             <Label htmlFor="username">Username</Label>
-            <Input id="username" placeholder="Enter your username" className="animate-pulse" />
+            <Input
+              id="username"
+              placeholder="Enter your username"
+              className="animate-pulse"
+              onChange={(e) => setUsername(e.target.value)}
+            />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" placeholder="Enter your password" className="animate-pulse" />
+            <Input
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              className="animate-pulse"
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
           <Button type="submit" className="w-full animate-bounce bg-primary text-primary-foreground">
             Sign Up
