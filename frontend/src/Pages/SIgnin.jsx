@@ -1,27 +1,35 @@
+import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+
 export default function Signin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const onHandleClick = async (e) => {
     e.preventDefault();
-         await fetch("http://localhost:3000/login", {
+    try {
+      const response = await fetch("http://localhost:3000/login", {
         method: "POST",
-        body: JSON.stringify({
-          username: username,
-          password: password,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
+        body: JSON.stringify({ username, password }),
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
       });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error:", error);
     }
+  };
+
   return (
     <div className="flex h-screen w-full items-start justify-center mt-6 bg-background">
-      <div className="w-full  mt-16 max-w-md rounded-2xl bg-card p-6 shadow-xl transition-all duration-300 hover:shadow-2xl">
+      <div className="w-full mt-16 max-w-md rounded-2xl bg-card p-6 shadow-xl transition-all duration-300 hover:shadow-2xl">
         <div className="mb-6 flex items-center justify-center">
           <FlameIcon className="h-6 w-6" />
           <span className="ml-2 text-2xl font-bold">FUSION</span>
@@ -29,11 +37,22 @@ export default function Signin() {
         <form className="space-y-4" onSubmit={onHandleClick}>
           <div className="grid gap-2">
             <Label htmlFor="username">Username</Label>
-            <Input id="username" placeholder="Enter your username" className="animate-pulse" onChange={(e) => setUsername(e.target.value)} />
+            <Input
+              id="username"
+              placeholder="Enter your username"
+              className="animate-pulse"
+              onChange={(e) => setUsername(e.target.value)}
+            />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" placeholder="Enter your password" className="animate-pulse" onChange={(e) => setPassword(e.target.value)} />
+            <Input
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              className="animate-pulse"
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
           <Button type="submit" className="w-full animate-bounce bg-primary text-primary-foreground">
             Sign In
@@ -41,7 +60,7 @@ export default function Signin() {
         </form>
         <div className="mt-4 text-center text-sm text-muted-foreground">
           Don't have an account?{" "}
-          <a href="/signup" className="font-medium underline underline-offset-4" prefetch={false}>
+          <a href="/signup" className="font-medium underline underline-offset-4">
             Sign up here
           </a>
         </div>
