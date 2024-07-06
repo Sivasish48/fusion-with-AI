@@ -1,31 +1,33 @@
-import { useState } from "react";
+import { useState ,useReducer} from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
+import { AuthData } from "../utils/AuthWrapper.jsx"
+import { useNavigate } from "react-router-dom";
 export default function Signin() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
 
-  const onHandleClick = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch("http://localhost:3000/login", {
-        method: "POST",
-        body: JSON.stringify({ username, password }),
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
+  const navigate = useNavigate();
+     const { login } = AuthData();
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+     const [ formData, setFormData ] = useReducer((formData, newItem) => { return ( {...formData, ...newItem} )}, {username: "", password: ""})
+
+ 
+     const [ errorMessage, setErrorMessage ] = useState(null)
+
+     const onHandleClick = async(e) => {
+          e.preventDefault()
+          try {
+               
+            await login(formData.username, formData.password)
+            navigate("/home")
+
+       } catch (error) {
+
+            setErrorMessage(error)
+            
+       }
+       
+  }
 
   return (
     <div className="flex h-screen w-full items-start justify-center mt-6 bg-background">
@@ -37,22 +39,11 @@ export default function Signin() {
         <form className="space-y-4" onSubmit={onHandleClick}>
           <div className="grid gap-2">
             <Label htmlFor="username">Username</Label>
-            <Input
-              id="username"
-              placeholder="Enter your username"
-              className="animate-pulse"
-              onChange={(e) => setUsername(e.target.value)}
-            />
+            <input value={formData.userName} onChange={(e) => setFormData({username: e.target.value}) } type="text"/>
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="Enter your password"
-              className="animate-pulse"
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <input value={formData.password} onChange={(e) => setFormData({password: e.target.value}) } type="password"/>
           </div>
           <Button type="submit" className="w-full animate-bounce bg-primary text-primary-foreground">
             Sign In
@@ -67,7 +58,10 @@ export default function Signin() {
       </div>
     </div>
   );
-}
+     }
+
+  
+
 
 function FlameIcon(props) {
   return (

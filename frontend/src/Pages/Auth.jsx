@@ -12,11 +12,11 @@ export default function Auth() {
             Welcome to FUSION
           </h2>
           <p className="mt-2 text-center text-sm text-muted-foreground">
-            Get started by creating an account or logging in.
+            Get started by logging in or as A Guest.
           </p>
         </div>
         <div className="space-y-4">
-          <Button className="w-full" onClick={() => navigate('/signup')}>Create Your Account</Button>
+          
           <Button variant="outline"  className="w-full" onClick={() => navigate('/signin')}>
             Login
           </Button>

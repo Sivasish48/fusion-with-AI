@@ -1,8 +1,10 @@
 import React from 'react'
-
+import { AuthData } from "../utils/AuthWrapper.jsx"
 function Home() {
+  const { user } = AuthData()
   return (
-    <div>Home</div>
+    
+    <p>Home of Username: {user.name}</p>
   )
 }
 
