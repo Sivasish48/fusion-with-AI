@@ -17,7 +17,7 @@ export default function Auth() {
         </div>
         <div className="space-y-4">
           
-          <Button variant="outline"  className="w-full" onClick={() => navigate('/signin')}>
+          <Button variant="outline"  className="w-full hover:bg-primary hover:text-primary-foreground" onClick={() => navigate('/signin')}>
             Login
           </Button>
 

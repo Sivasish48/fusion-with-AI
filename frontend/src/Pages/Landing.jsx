@@ -19,12 +19,12 @@ function Landing() {
             { text: "With " },
             { text: "Fusion " },
           ]}
-          textStyle={{ fontSize: '2rem' }} // Adjust the font size
+          textStyle={{ fontSize: '6rem' }} // Adjust the font size
         />
         <div className="mt-4"> {/* Add margin to create a gap */}
           <HoverBorderGradient>
             <button 
-              className="px-6 py-3 text-lg" // Increase padding and font size for a larger button
+              className="px-3  py-2 text-lg" // Increase padding and font size for a larger button
               onClick={() => navigate('/auth')}
             >
               Get Started

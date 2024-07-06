@@ -1,67 +1,77 @@
-import { useState ,useReducer} from "react";
+import { useState, useReducer } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { AuthData } from "../utils/AuthWrapper.jsx"
+import { AuthData } from "../utils/AuthWrapper.jsx";
 import { useNavigate } from "react-router-dom";
+
 export default function Signin() {
-
   const navigate = useNavigate();
-     const { login } = AuthData();
+  const { login } = AuthData();
 
-     const [ formData, setFormData ] = useReducer((formData, newItem) => { return ( {...formData, ...newItem} )}, {username: "", password: ""})
+  const [formData, setFormData] = useReducer(
+    (formData, newItem) => ({ ...formData, ...newItem }),
+    { username: "", password: "" }
+  );
 
- 
-     const [ errorMessage, setErrorMessage ] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null);
 
-     const onHandleClick = async(e) => {
-          e.preventDefault()
-          try {
-               
-            await login(formData.username, formData.password)
-            navigate("/home")
-
-       } catch (error) {
-
-            setErrorMessage(error)
-            
-       }
-       
-  }
+  const onHandleClick = async (e) => {
+    e.preventDefault();
+    try {
+      await login(formData.username, formData.password);
+      navigate("/home");
+    } catch (error) {
+      setErrorMessage(error);
+    }
+  };
 
   return (
     <div className="flex h-screen w-full items-start justify-center mt-6 bg-background">
       <div className="w-full mt-16 max-w-md rounded-2xl bg-card p-6 shadow-xl transition-all duration-300 hover:shadow-2xl">
-        <div className="mb-6 flex items-center justify-center">
-          <FlameIcon className="h-6 w-6" />
-          <span className="ml-2 text-2xl font-bold">FUSION</span>
+        <div className="mb-6 flex flex-col items-center justify-center">
+          <div className="flex items-center mb-2">
+            <FlameIcon className="h-6 w-6" />
+            <span className="ml-2 text-2xl font-bold">FUSION</span>
+          </div>
+          <p className="text-sm text-muted-foreground">Enter Your Username</p>
+          <p className="text-sm text-muted-foreground">Password is "password"</p>
         </div>
         <form className="space-y-4" onSubmit={onHandleClick}>
           <div className="grid gap-2">
             <Label htmlFor="username">Username</Label>
-            <input value={formData.userName} onChange={(e) => setFormData({username: e.target.value}) } type="text"/>
+            <Input
+              value={formData.username}
+              onChange={(e) => setFormData({ username: e.target.value })}
+              type="text"
+              id="username"
+              placeholder="Enter your username"
+              className="h-12"
+            />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
-            <input value={formData.password} onChange={(e) => setFormData({password: e.target.value}) } type="password"/>
+            <Input
+              value={formData.password}
+              onChange={(e) => setFormData({ password: e.target.value })}
+              type="password"
+              id="password"
+              placeholder="Enter your password"
+              className="h-12"
+            />
           </div>
-          <Button type="submit" className="w-full animate-bounce bg-primary text-primary-foreground">
+          <Button
+            type="submit"
+            className="w-full animate-bounce bg-primary text-primary-foreground"
+          >
             Sign In
           </Button>
         </form>
-        <div className="mt-4 text-center text-sm text-muted-foreground">
-          Don't have an account?{" "}
-          <a href="/signup" className="font-medium underline underline-offset-4">
-            Sign up here
-          </a>
-        </div>
+       
       </div>
     </div>
   );
-     }
-
-  
-
+}
 
 function FlameIcon(props) {
   return (

@@ -1,14 +1,14 @@
 import { createContext, useContext, useState } from "react";
 import Header from "../components/header.jsx";
 import { RenderMenu, RenderRoutes } from "../strucure/RenderNavigation.jsx";
-
+import { useNavigate } from "react-router-dom";
 const AuthContext = createContext();
 
 export const AuthData = () => useContext(AuthContext);
 
 export const AuthWrapper = () => {
   const [user, setUser] = useState({ name: "", isAuthenticated: false });
-
+  const navigate = useNavigate();
   const login = (userName, password) => {
     return new Promise((resolve, reject) => {
       if (password === "password") {
@@ -22,6 +22,7 @@ export const AuthWrapper = () => {
 
   const logout = () => {
     setUser({ name: "", isAuthenticated: false });
+    navigate("/");
   };
 
   return (
