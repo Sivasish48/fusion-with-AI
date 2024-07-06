@@ -1,17 +1,34 @@
-
+import { Link } from "react-router-dom";
+import { AuthData } from "../utils/AuthWrapper.jsx";
 
 const Header = () => {
- 
-
- 
+  const { user, logout } = AuthData();
 
   return (
-    <header className="flex h-16 w-full items-center justify-between px-4 md:px-6 bg-white">
-      <a href="#" className="flex items-center gap-2">
-        <FlameIcon className="h-6 w-6" />
-        <span className="font-bold text-3xl">Fusion</span>
-        
-      </a>
+    <header className="flex h-16 w-full items-center justify-between px-4 md:px-6 bg-white shadow">
+      <div className="flex items-center">
+        <a href="#" className="flex items-center gap-2">
+          <FlameIcon className="h-6 w-6" />
+          <span className="font-bold text-3xl">Fusion</span>
+        </a>
+      </div>
+      <div className="flex items-center">
+        {user.isAuthenticated ? (
+          <button
+            onClick={logout}
+            className="bg-white text-black font-bold py-2 px-4 rounded hover:bg-black hover:text-white transition-colors duration-300"
+          >
+            Log out
+          </button>
+        ) : (
+          <Link
+            to="/signin"
+            className="bg-white text-black font-bold py-2 px-4 rounded hover:bg-black hover:text-white transition-colors duration-300"
+          >
+            Login
+          </Link>
+        )}
+      </div>
     </header>
   );
 }

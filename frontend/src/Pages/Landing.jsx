@@ -3,10 +3,6 @@ import { TypewriterEffect } from '../components/typewriter-effect';
 import { HoverBorderGradient } from '../components/hover-border-gradient';
 import { useNavigate } from 'react-router-dom';
 
-
-
-
-
 function Landing() {
   const navigate = useNavigate();
 
@@ -36,7 +32,6 @@ function Landing() {
           </HoverBorderGradient>
         </div>
       </div>
-     
     </div>
   );
 }
