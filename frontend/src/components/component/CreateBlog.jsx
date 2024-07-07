@@ -1,7 +1,13 @@
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+//import { Textarea } from "@/components/ui/textarea";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+
+import FroalaEditorComponent from 'react-froala-wysiwyg';
+import "froala-editor/js/plugins.pkgd.min.js";
 
 export default function CreateBlog() {
   return (
@@ -24,7 +30,8 @@ export default function CreateBlog() {
           <div className="space-y-4">
             <h2 className="text-2xl md:text-3xl font-bold">Description</h2>
             <p className="text-muted-foreground">Provide a brief summary of your blog post.</p>
-            <Textarea placeholder="Enter your blog post description" className="w-full min-h-[150px]" />
+            {/* <Textarea placeholder="Enter your blog post description" className="w-full min-h-[150px]" /> */}
+            <FroalaEditorComponent tag='textarea' className="w-full min-h-[150px]" />
           </div>
         </div>
         <div className="animate-fade-in-up">
@@ -74,3 +81,4 @@ export default function CreateBlog() {
     </div>
   );
 }
+ 
