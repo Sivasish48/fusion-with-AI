@@ -1,31 +1,41 @@
 import { Link, useLocation } from "react-router-dom";
 import { AuthData } from "../utils/AuthWrapper.jsx";
-
+import { useNavigate } from "react-router-dom";
 const Header = () => {
   const { user, logout } = AuthData();
   const location = useLocation();
-
+ const navigate = useNavigate();
   return (
-    <header className="flex h-16 w-full items-center justify-between px-4 md:px-6 bg-white ">
+    <header className="flex h-16 w-full items-center justify-between px-4 md:px-6 bg-white">
       <div className="flex items-center">
-        <a href="#" className="flex items-center gap-2">
+        <a href="#" className="flex items-center gap-2" onClick={() => navigate("/")}>
           <FlameIcon className="h-6 w-6" />
           <span className="font-bold text-3xl">Fusion</span>
         </a>
       </div>
-      <div className="flex items-center">
-        {user.isAuthenticated ? (
-          <button
-            onClick={logout}
-            className="bg-white text-black border border-black font-bold py-2 px-4 rounded hover:bg-black hover:text-white transition-colors duration-300"
-          >
-            Logout
-          </button>
+      <div className="flex items-center gap-4">
+      {user.isAuthenticated ? (
+          <>
+            {location.pathname !== '/createblog' && (
+              <button 
+                className="bg-white text-black border border-black font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:bg-black hover:text-white hover:scale-105"
+                onClick={() => navigate("/createblog")}
+              >
+                Post a Blog
+              </button>
+            )}
+            <button
+              onClick={logout}
+              className="bg-white text-black border border-black font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:bg-black hover:text-white hover:scale-105"
+            >
+              Logout
+            </button>
+          </>
         ) : (
           location.pathname !== '/signin' && location.pathname !== '/' && location.pathname !== '/auth' && (
             <Link
               to="/signin"
-              className="bg-white text-black font-bold border border-black py-2 px-4 rounded hover:bg-black hover:text-white transition-colors duration-300"
+              className="bg-white text-black font-bold border border-black py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:bg-black hover:text-white hover:scale-105"
             >
               Login
             </Link>
