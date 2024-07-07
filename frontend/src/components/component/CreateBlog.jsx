@@ -1,5 +1,6 @@
 import { Input } from "@/components/ui/input";
 //import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -10,6 +11,11 @@ import FroalaEditorComponent from 'react-froala-wysiwyg';
 import "froala-editor/js/plugins.pkgd.min.js";
 
 export default function CreateBlog() {
+
+  const [title, setTitle] = useState("");
+ 
+  const [description, setDescription] = useState(""); 
+
   return (
     <div className="w-full max-w-4xl mx-auto py-12 md:py-16 lg:py-20 px-4 md:px-6 lg:px-8">
       <div className="space-y-8 lg:space-y-12">
@@ -25,13 +31,14 @@ export default function CreateBlog() {
           <div className="space-y-4">
             <h2 className="text-2xl md:text-3xl font-bold">Title</h2>
             <p className="text-muted-foreground">Craft a compelling title that grabs your reader's attention.</p>
-            <Input type="text" placeholder="Enter your blog post title" className="w-full" />
+            <Input type="text" placeholder="Enter your blog post title" className="w-full"  onChange={(e) => setTitle(e.target.value)} />
           </div>
+         
           <div className="space-y-4">
             <h2 className="text-2xl md:text-3xl font-bold">Description</h2>
-            <p className="text-muted-foreground">Provide a brief summary of your blog post.</p>
+            <p className="text-muted-foreground">Provide the description of your blog post.</p>
             {/* <Textarea placeholder="Enter your blog post description" className="w-full min-h-[150px]" /> */}
-            <FroalaEditorComponent tag='textarea' className="w-full min-h-[150px]" />
+            <FroalaEditorComponent tag='textarea' className="w-full min-h-[150px]"  onChange={(e) => setDescription(e.target.value)} />
           </div>
         </div>
         <div className="animate-fade-in-up">
