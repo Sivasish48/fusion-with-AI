@@ -1,56 +1,81 @@
-const express = require("express");
+const express = require('express');
+const multer = require('multer');
+const cors = require('cors');
+const path = require('path');
+const fs = require('fs');
+const mongoose = require('mongoose');
+
+// Initialize Express app
 const app = express();
-const cors = require("cors");
-const mongoose = require("mongoose");
-const User = require("./models/userModel");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const PORT = process.env.PORT || 3000;
 
+// MongoDB connection
+const mongoURI = 'mongodb+srv://sivasish48:8slBZC4zuBOWATqZ@cluster0.qxlxqj2.mongodb.net/'; // Replace with your MongoDB connection string
+mongoose.connect(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection error:', err));
+
+// Define the BlogPost model
+const blogPostSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  date: { type: Date, default: Date.now },
+});
+
+const BlogPost = mongoose.model('BlogPost', blogPostSchema);
+
+// Middleware
+app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Apply CORS middleware with comprehensive configuration
-app.use(cors({
-  credentials: true,
-  origin: "http://localhost:5173",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  allowedHeaders: "Origin,X-Requested-With,Content-Type,Accept,Authorization"
-}));
+// Storage configuration for multer
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + '-' + file.originalname);
+  }
+});
 
-// Handle preflight requests
-app.options('*', cors());
+const upload = multer({ storage: storage });
 
-mongoose.connect("mongodb+srv://suvam48:dVeNZd.QV8vgng7@fusion.wubagih.mongodb.net/");
-const secret = "secrettt";
-const salt = bcrypt.genSaltSync(10);
+// Route to handle image uploads
+app.post('/upload_image', upload.single('file'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send('No file uploaded.');
+  }
+  const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+  res.json({ link: imageUrl });
+});
 
-app.post("/register", async (req, res) => {
-  const { username, password } = req.body;
+// Route to handle blog post submissions
+app.post('/submit_blog', async (req, res) => {
+  const { title, description } = req.body;
+  if (!title || !description) {
+    return res.status(400).send('Title and description are required.');
+  }
+
   try {
-    const userDoc = await User.create({ username, password: bcrypt.hashSync(password, salt) });
-    res.json(userDoc);
-  } catch (err) {
-    console.log(err);
-    res.status(400).json({ message: "User already exists", err });
-  }
-});
-
-app.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-  const userDoc = await User.findOne({ username });
-  if (!userDoc) {
-    return res.status(400).json({ message: "Invalid Credentials" });
-  }
-  const checkPassword = bcrypt.compareSync(password, userDoc.password);
-  if (checkPassword) {
-    jwt.sign({ username, id: userDoc._id }, secret, {}, (err, token) => {
-      if (err) throw err;
-      res.cookie('token', token).json("ok");
+    // Save blog post to MongoDB
+    const newBlogPost = new BlogPost({
+      title,
+      description,
     });
-  } else {
-    res.status(400).json({ message: "Invalid Credentials" });
+
+    await newBlogPost.save();
+    res.status(201).json(newBlogPost);
+  } catch (err) {
+    res.status(500).send('Failed to save the blog post.');
   }
 });
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });

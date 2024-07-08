@@ -6,14 +6,58 @@ import { Button } from "@/components/ui/button";
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 
-
 export default function CreateBlog() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleImageUpload = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await fetch("http://localhost:3000/upload_image", { // Your backend URL
+      method: "POST",
+      body: formData,
+    });
+    const data = await response.json();
+    return data.link; // Return the link to the uploaded image
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(title, description);
+
+    // Gather all image files from the description content
+    const imageFiles = Array.from(description.matchAll(/<img src="([^"]+)"[^>]*>/g)).map(match => match[1]);
+
+    let updatedDescription = description;
+
+    // Upload each image and replace the src with the uploaded URL
+    const uploadPromises = imageFiles.map(async (src) => {
+      const file = await fetch(src).then(res => res.blob());
+      const uploadedUrl = await handleImageUpload(file);
+      updatedDescription = updatedDescription.replace(src, uploadedUrl);
+    });
+
+    await Promise.all(uploadPromises);
+
+    // Now send title, updated description, and other data to your backend
+    const data = {
+      title,
+      description: updatedDescription,
+    };
+
+    fetch("http://localhost:3000/submit_blog", { // Your backend URL
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Success:", data);
+      })
+      .catch(error => {
+        console.error("Error:", error);
+      });
   };
 
   return (
@@ -36,7 +80,14 @@ export default function CreateBlog() {
           <div className="space-y-4">
             <h2 className="text-2xl md:text-3xl font-bold">Description</h2>
             <p className="text-muted-foreground">Provide the description of your blog post.</p>
-            <FroalaEditorComponent tag='textarea' className="w-full min-h-[150px]" onModelChange={(content) => setDescription(content)} />
+            <FroalaEditorComponent
+              tag='textarea'
+              className="w-full min-h-[150px]"
+              onModelChange={(content) => setDescription(content)}
+              config={{
+                imageUpload: false, // Disable built-in image upload
+              }}
+            />
           </div>
         </div>
         <div className="animate-fade-in-up">
