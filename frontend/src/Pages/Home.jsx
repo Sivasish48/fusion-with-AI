@@ -1,13 +1,13 @@
-import React from 'react';
-import { AuthData } from "../utils/AuthWrapper.jsx";
+// src/pages/Home.jsx
+import BlogFeed from '@/components/component/BlogFeed.jsx';
 
-function Home() {
-  const { user } = AuthData();
+const Home = () => {
   return (
-    <div className="flex h-screen items-center justify-center">
-      <p className="text-2xl font-bold">Username: {user.name}</p>
+    <div className="home-page">
+      <h1>Welcome to the Blog</h1>
+      <BlogFeed />
     </div>
   );
-}
+};
 
 export default Home;
