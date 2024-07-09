@@ -35,23 +35,28 @@ const BlogFeed = () => {
             key={post._id}
             className="group relative overflow-hidden rounded-lg border bg-background transition-all duration-300 hover:shadow-lg"
           >
-            <img
-              src={post.imageUrl || "/placeholder.svg"}
-              alt={post.title}
-              width={600}
-              height={40}
-              className="h-60 w-full object-cover transition-all duration-300 group-hover:scale-105"
-            />
-            <div className="p-4">
-              <h3
-                className="text-lg font-semibold text-foreground transition-colors duration-300 group-hover:text-primary"
-              >
-                {post.title}
-              </h3>
-              <div 
-                className="mt-2 text-sm text-muted-foreground" 
-                dangerouslySetInnerHTML={{ __html: post.description }}
-              ></div>
+            {post.imageUrl && (
+              <img
+                src={post.imageUrl}
+                alt={post.title}
+                className="h-60 w-full object-cover transition-all duration-300 group-hover:scale-105"
+              />
+            )}
+            <div className="p-4 flex flex-col justify-between h-full">
+              <div>
+                <h3
+                  className="text-lg font-semibold text-foreground transition-colors duration-300 group-hover:text-primary"
+                >
+                  {post.title}
+                </h3>
+                <div 
+                  className="mt-2 text-sm text-muted-foreground line-clamp-3" 
+                  dangerouslySetInnerHTML={{ __html: post.description }}
+                ></div>
+              </div>
+              <div className="mt-4 text-sm text-muted-foreground">
+                {post.summary}
+              </div>
             </div>
           </div>
         ))}

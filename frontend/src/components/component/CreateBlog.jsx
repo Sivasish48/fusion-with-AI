@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/js/plugins.pkgd.min.js';
-
+import { useNavigate } from "react-router-dom";
 export default function CreateBlog() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-
+ const navigate = useNavigate();
   const handleImageUpload = async (file) => {
     const formData = new FormData();
     formData.append("file", file);
@@ -66,6 +66,7 @@ export default function CreateBlog() {
       .catch(error => {
         console.error("Error:", error.message); // Add error message for debugging
       });
+      navigate("/home");
   };
 
   return (
