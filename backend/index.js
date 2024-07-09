@@ -10,7 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // MongoDB connection
-const mongoURI = 'mongodb+srv://sivasish48:8slBZC4zuBOWATqZ@cluster0.qxlxqj2.mongodb.net/'; // Replace with your MongoDB connection string
+const mongoURI = 'mongodb+srv://sivasish48:B5tgYiA3uo0i7E6k@blogpost.dbdlngu.mongodb.net/'; // Replace with your MongoDB connection string
 mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -22,7 +22,6 @@ mongoose.connect(mongoURI, {
 const blogPostSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
-  imageUrl: { type: String }, // Add imageUrl to schema
   date: { type: Date, default: Date.now },
 });
 
@@ -57,8 +56,8 @@ app.post('/upload_image', upload.single('file'), (req, res) => {
 
 // Route to handle blog post submissions
 app.post('/submit_blog', async (req, res) => {
-  const { title, description, imageUrl } = req.body; // Include imageUrl
-  if (!title || !description || !imageUrl) {
+  const { title, description } = req.body;
+  if (!title || !description) {
     return res.status(400).send('Title and description are required.');
   }
 
@@ -67,7 +66,6 @@ app.post('/submit_blog', async (req, res) => {
     const newBlogPost = new BlogPost({
       title,
       description,
-      imageUrl, // Save the image URL
     });
 
     await newBlogPost.save();
@@ -86,7 +84,6 @@ app.get('/api/posts', async (req, res) => {
     res.status(500).send('Failed to fetch blog posts.');
   }
 });
-
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

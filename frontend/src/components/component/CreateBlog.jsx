@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/js/plugins.pkgd.min.js';
+
 export default function CreateBlog() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -38,11 +39,13 @@ export default function CreateBlog() {
 
     await Promise.all(uploadPromises);
 
-    // Now send title, updated description, and other data to your backend
+    // Now send title and updated description to your backend
     const data = {
       title,
       description: updatedDescription,
     };
+
+    console.log("Data being sent to backend:", JSON.stringify(data)); // Add debugging log
 
     fetch("http://localhost:3000/submit_blog", { // Your backend URL
       method: "POST",
@@ -51,12 +54,17 @@ export default function CreateBlog() {
       },
       body: JSON.stringify(data),
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          return response.json().then(err => { throw new Error(err.error) });
+        }
+        return response.json();
+      })
       .then(data => {
         console.log("Success:", data);
       })
       .catch(error => {
-        console.error("Error:", error);
+        console.error("Error:", error.message); // Add error message for debugging
       });
   };
 
