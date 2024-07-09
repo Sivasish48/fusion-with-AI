@@ -28,18 +28,28 @@ const BlogFeed = () => {
   if (error) return <p>Error loading posts: {error.message}</p>;
 
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold text-center mb-8">Blog Feed</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className="container mx-auto px-4 py-12 md:px-6 lg:py-16">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
-          <div key={post._id} className="bg-white shadow-md rounded-lg overflow-hidden">
-            {post.imageUrl && (
-              <img src={post.imageUrl} alt={post.title} className="w-full h-48 object-cover" />
-            )}
+          <div
+            key={post._id}
+            className="group relative overflow-hidden rounded-lg border bg-background transition-all duration-300 hover:shadow-lg"
+          >
+            <img
+              src={post.imageUrl || "/placeholder.svg"}
+              alt={post.title}
+              width={600}
+              height={40}
+              className="h-60 w-full object-cover transition-all duration-300 group-hover:scale-105"
+            />
             <div className="p-4">
-              <h2 className="text-xl font-bold mb-2">{post.title}</h2>
+              <h3
+                className="text-lg font-semibold text-foreground transition-colors duration-300 group-hover:text-primary"
+              >
+                {post.title}
+              </h3>
               <div 
-                className="text-gray-700" 
+                className="mt-2 text-sm text-muted-foreground" 
                 dangerouslySetInnerHTML={{ __html: post.description }}
               ></div>
             </div>
