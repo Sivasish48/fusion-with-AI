@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const BlogFeed = () => {
   const [posts, setPosts] = useState([]);
@@ -31,10 +32,7 @@ const BlogFeed = () => {
     <div className="container mx-auto px-4 py-12 md:px-6 lg:py-16">
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
-          <div
-            key={post._id}
-            className="group relative overflow-hidden rounded-lg border bg-background transition-all duration-300 hover:shadow-lg"
-          >
+          <Link to={`/posts/${post._id}`} key={post._id} className="group relative overflow-hidden rounded-lg border bg-background transition-all duration-300 hover:shadow-lg">
             {post.imageUrl && (
               <img
                 src={post.imageUrl}
@@ -44,21 +42,16 @@ const BlogFeed = () => {
             )}
             <div className="p-4 flex flex-col justify-between h-full">
               <div>
-                <h3
-                  className="text-lg font-semibold text-foreground transition-colors duration-300 group-hover:text-primary"
-                >
+                <h3 className="text-lg font-semibold text-foreground transition-colors duration-300 group-hover:text-primary">
                   {post.title}
                 </h3>
-                <div 
-                  className="mt-2 text-sm text-muted-foreground line-clamp-3" 
-                  dangerouslySetInnerHTML={{ __html: post.description }}
-                ></div>
+                <div className="mt-2 text-sm text-muted-foreground line-clamp-3" dangerouslySetInnerHTML={{ __html: post.description }}></div>
               </div>
               <div className="mt-4 text-sm text-muted-foreground">
                 {post.summary}
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

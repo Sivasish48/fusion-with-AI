@@ -2,7 +2,6 @@ const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
 const path = require('path');
-const fs = require('fs');
 const mongoose = require('mongoose');
 
 // Initialize Express app
@@ -22,6 +21,7 @@ mongoose.connect(mongoURI, {
 const blogPostSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
+  imageUrl: { type: String },
   date: { type: Date, default: Date.now },
 });
 
@@ -56,7 +56,7 @@ app.post('/upload_image', upload.single('file'), (req, res) => {
 
 // Route to handle blog post submissions
 app.post('/submit_blog', async (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, imageUrl } = req.body;
   if (!title || !description) {
     return res.status(400).send('Title and description are required.');
   }
@@ -66,6 +66,7 @@ app.post('/submit_blog', async (req, res) => {
     const newBlogPost = new BlogPost({
       title,
       description,
+      imageUrl, // Save imageUrl
     });
 
     await newBlogPost.save();
@@ -75,7 +76,6 @@ app.post('/submit_blog', async (req, res) => {
   }
 });
 
-
 app.get('/api/posts', async (req, res) => {
   try {
     const blogPosts = await BlogPost.find();
@@ -84,6 +84,19 @@ app.get('/api/posts', async (req, res) => {
     res.status(500).send('Failed to fetch blog posts.');
   }
 });
+
+app.get('/api/posts/:id', async (req, res) => {
+  try {
+    const post = await BlogPost.findById(req.params.id);
+    if (!post) {
+      return res.status(404).send('Post not found');
+    }
+    res.status(200).json(post);
+  } catch (err) {
+    res.status(500).send('Failed to fetch the post.');
+  }
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
