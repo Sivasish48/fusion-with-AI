@@ -8,6 +8,9 @@ const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+
+require("./geminiApi")
+
 // MongoDB connection
 const mongoURI = 'mongodb+srv://sivasish48:B5tgYiA3uo0i7E6k@blogpost.dbdlngu.mongodb.net/'; // Replace with your MongoDB connection string
 mongoose.connect(mongoURI, {
