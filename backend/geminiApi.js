@@ -32,7 +32,7 @@ const {
     responseMimeType: "text/plain",
   };
   
-  async function run() {
+  async function run(prompt) {
     const chatSession = model.startChat({
       generationConfig,
    // safetySettings: Adjust safety settings
@@ -41,8 +41,12 @@ const {
       ],
     });
   
-    const result = await chatSession.sendMessage("Who is suresh Raina?");
+    const result = await chatSession.sendMessage(prompt);
     console.log(result.response.text());
+    return result.response.text()
   }
   
-  run();
+ // run();
+
+ module.exports =  run;
+ 

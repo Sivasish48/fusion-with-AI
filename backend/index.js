@@ -3,7 +3,7 @@ const multer = require('multer');
 const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
-
+const geminiPromptRouter = require("./routers/geminiPromptRouter.js");
 // Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -99,6 +99,10 @@ app.get('/api/posts/:id', async (req, res) => {
     res.status(500).send('Failed to fetch the post.');
   }
 });
+
+
+// For ai post generation
+app.use("/api", geminiPromptRouter);
 
 // Start the server
 app.listen(PORT, () => {
