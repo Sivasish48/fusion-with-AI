@@ -1,3 +1,6 @@
+const dotenv = require('dotenv');
+dotenv.config();
+
 /*
  * Install the Generative AI SDK
  *
@@ -6,10 +9,6 @@
  * See the getting started guide for more information
  * https://ai.google.dev/gemini-api/docs/get-started/node
  */
-//import { GoogleGenerativeAI } from "@google/generative-ai";
-//import { HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
-const dotenv = require('dotenv');
-dotenv.config();
 
 const {
     GoogleGenerativeAI,
@@ -38,15 +37,27 @@ const {
    // safetySettings: Adjust safety settings
    // See https://ai.google.dev/gemini-api/docs/safety-settings
       history: [
+        {
+          role: "user",
+          parts: [
+            {text: "You are an AI specialized in providing descriptions and information about topics related to coding, technology, and software development. The prompt can be a word or a title  or an sentence .If the prompt is relevant to these areas, generate a detailed and accurate description. If the prompt is not related to coding, technology, or software development, respond with, \"The provided prompt is not related to coding, technology, or software development.\n\n"},
+          ],
+        },
+        {
+          role: "model",
+          parts: [
+            {text: "I'm ready! Please give me a prompt related to coding, technology, or software development. I'll do my best to provide a detailed and accurate description. 😊 \n"},
+          ],
+        },
       ],
     });
   
     const result = await chatSession.sendMessage(prompt);
     console.log(result.response.text());
-    return result.response.text()
+    return result.response.text();
   }
   
- // run();
+//   run();
 
- module.exports =  run;
- 
+
+module.exports = run;
