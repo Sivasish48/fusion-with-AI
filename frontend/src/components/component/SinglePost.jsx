@@ -2,6 +2,8 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
+import { useNavigate,useLocation } from 'react-router-dom';
+import { AuthData } from "@/utils/AuthWrapper.jsx";
 
 const extractImageAndDescription = (html) => {
   const div = document.createElement('div');
@@ -13,10 +15,13 @@ const extractImageAndDescription = (html) => {
 };
 
 const SinglePost = () => {
+ const {user} = AuthData();
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -65,9 +70,12 @@ const SinglePost = () => {
         <div className="prose prose-gray dark:prose-invert">
           <p dangerouslySetInnerHTML={{ __html: post.description }}></p>
         </div>
-        <div className="flex justify-end">
-          <Button variant="outline">Edit Post</Button>
-        </div>
+   
+        {user.isAuthenticated && (
+          <div className="flex justify-end">
+            <Button variant="outline" onClick={() => navigate(`/editpost/${id}`)}>Edit Post</Button>
+          </div>
+        )}
       </article>
     </div>
   );

@@ -1,3 +1,4 @@
+// src/Pages/BlogFeed.jsx
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -23,7 +24,7 @@ const BlogFeed = () => {
       }
     };
     fetchBlogPosts();
-  }, []);
+  }, []); // This empty dependency array means this effect runs once when the component mounts
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading posts: {error.message}</p>;

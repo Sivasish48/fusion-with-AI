@@ -104,6 +104,27 @@ app.get('/api/posts/:id', async (req, res) => {
 // For ai post generation
 app.use("/api", geminiPromptRouter);
 
+
+app.put('/api/posts/:id', async (req, res) => {
+  const { id } = req.params;
+  const { title, description, imageUrl } = req.body;
+
+  try {
+    const updatedPost = await BlogPost.findByIdAndUpdate(
+      id,
+      { title, description, imageUrl },
+      { new: true } // This option returns the updated document
+    );
+
+    if (!updatedPost) {
+      return res.status(404).send('Post not found');
+    }
+
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(500).send('Failed to update the blog post.');
+  }
+});
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

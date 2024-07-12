@@ -8,6 +8,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <AuthWrapper />
+      
       </BrowserRouter>      
     </div>
   );
