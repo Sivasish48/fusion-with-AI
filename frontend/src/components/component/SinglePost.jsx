@@ -1,9 +1,9 @@
-// src/Pages/SinglePost.jsx
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { useNavigate,useLocation } from 'react-router-dom';
 import { AuthData } from "@/utils/AuthWrapper.jsx";
+import Skeleton from '@/components/component/Skeleton';
+import { useTheme } from "@/components/component/theme-provider"; // Import useTheme
 
 const extractImageAndDescription = (html) => {
   const div = document.createElement('div');
@@ -15,13 +15,13 @@ const extractImageAndDescription = (html) => {
 };
 
 const SinglePost = () => {
- const {user} = AuthData();
+  const { user } = AuthData();
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation();
+  const { theme } = useTheme(); // Get the current theme
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -48,7 +48,7 @@ const SinglePost = () => {
   if (!post) return <p>No post found</p>;
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 md:px-6 py-12 md:py-16">
+    <div className={`w-full max-w-4xl mx-auto px-4 md:px-6 py-12 md:py-16 ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}>
       <article className="space-y-6">
         <div className="relative aspect-[16/9] overflow-hidden rounded-lg">
           <img
@@ -67,7 +67,7 @@ const SinglePost = () => {
             Published on <time dateTime={new Date(post.date).toISOString()}>{new Date(post.date).toLocaleDateString()}</time>
           </p>
         </div>
-        <div className="prose prose-gray dark:prose-invert">
+        <div className={`prose ${theme === "dark" ? "prose-invert" : "prose-gray"}`}>
           <p dangerouslySetInnerHTML={{ __html: post.description }}></p>
         </div>
    

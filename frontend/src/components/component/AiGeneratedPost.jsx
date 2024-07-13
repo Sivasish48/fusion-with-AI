@@ -56,10 +56,10 @@ export function AiGeneratedPost() {
             {error && <p className="text-red-500">{error}</p>}
             <Textarea
               id="description"
-              rows={4}
+              rows={description ? 10 : 4}
               value={description}
               placeholder="Your AI-generated description will appear here"
-              className="w-full"
+              className={`w-full transition-all duration-500 ${description ? 'h-40' : 'h-20'}`}
               readOnly
             />
             <div className="flex items-center justify-end gap-2">

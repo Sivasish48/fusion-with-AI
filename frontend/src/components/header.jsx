@@ -1,12 +1,16 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthData } from "../utils/AuthWrapper.jsx";
-import { useNavigate } from "react-router-dom";
+import { ModeToggle } from "./component/mode-toggle.jsx";
+import { useTheme } from "@/components/component/theme-provider.jsx";
+
 const Header = () => {
   const { user, logout } = AuthData();
   const location = useLocation();
- const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { theme } = useTheme();
+
   return (
-    <header className="flex h-16 w-full items-center justify-between px-4 md:px-6 bg-white">
+    <header className={`relative flex h-16 w-full items-center justify-between px-4 md:px-6 ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}>
       <div className="flex items-center">
         <a href="#" className="flex items-center gap-2" onClick={() => navigate("/")}>
           <FlameIcon className="h-6 w-6" />
@@ -14,11 +18,12 @@ const Header = () => {
         </a>
       </div>
       <div className="flex items-center gap-4">
-      {user.isAuthenticated ? (
+        <ModeToggle />
+        {user.isAuthenticated ? (
           <>
-            {location.pathname !== '/createblog' && (
-              <button 
-                className="bg-white text-black border border-black font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:bg-black hover:text-white hover:scale-105"
+            {location.pathname !== "/createblog" && (
+              <button
+                className={`${theme === "dark" ? "bg-black text-white border-white" : "bg-white text-black border-black"} font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:bg-black hover:text-white hover:scale-105`}
                 onClick={() => navigate("/createblog")}
               >
                 Post a Blog
@@ -26,16 +31,16 @@ const Header = () => {
             )}
             <button
               onClick={logout}
-              className="bg-white text-black border border-black font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:bg-black hover:text-white hover:scale-105"
+              className={`${theme === "dark" ? "bg-black text-white border-white" : "bg-white text-black border-black"} font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:bg-black hover:text-white hover:scale-105`}
             >
               Logout
             </button>
           </>
         ) : (
-          location.pathname !== '/signin' && location.pathname !== '/' && location.pathname !== '/auth' && (
+          location.pathname !== "/signin" && location.pathname !== "/" && location.pathname !== "/auth" && (
             <Link
               to="/signin"
-              className="bg-white text-black font-bold border border-black py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:bg-black hover:text-white hover:scale-105"
+              className={`${theme === "dark" ? "bg-black text-white border-white" : "bg-white text-black border-black"} font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:bg-black hover:text-white hover:scale-105`}
             >
               Login
             </Link>
@@ -44,7 +49,7 @@ const Header = () => {
       </div>
     </header>
   );
-}
+};
 
 function FlameIcon(props) {
   return (

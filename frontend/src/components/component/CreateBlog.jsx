@@ -8,52 +8,43 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/js/plugins.pkgd.min.js';
 import { useNavigate } from "react-router-dom";
 import { Sparkles } from 'lucide-react';
+import { useTheme } from "@/components/component/theme-provider"; // Import useTheme
 
 export default function CreateBlog() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
- const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { theme } = useTheme(); // Get the current theme
+
   const handleImageUpload = async (file) => {
     const formData = new FormData();
     formData.append("file", file);
-    const response = await fetch("http://localhost:3000/upload_image", { // Your backend URL
+    const response = await fetch("http://localhost:3000/upload_image", { 
       method: "POST",
       body: formData,
     });
     const data = await response.json();
-    return data.link; // Return the link to the uploaded image
+    return data.link; 
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Gather all image files from the description content
+   
     const imageFiles = Array.from(description.matchAll(/<img src="([^"]+)"[^>]*>/g)).map(match => match[1]);
-
     let updatedDescription = description;
-
-    // Upload each image and replace the src with the uploaded URL
     const uploadPromises = imageFiles.map(async (src) => {
       const file = await fetch(src).then(res => res.blob());
       const uploadedUrl = await handleImageUpload(file);
       updatedDescription = updatedDescription.replace(src, uploadedUrl);
     });
-
     await Promise.all(uploadPromises);
 
-    // Now send title and updated description to your backend
-    const data = {
-      title,
-      description: updatedDescription,
-    };
+    const data = { title, description: updatedDescription };
 
-    console.log("Data being sent to backend:", JSON.stringify(data)); // Add debugging log
-
-    fetch("http://localhost:3000/submit_blog", { // Your backend URL
+    console.log("Data being sent to backend:", JSON.stringify(data)); 
+    fetch("http://localhost:3000/submit_blog", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
       .then(response => {
@@ -66,13 +57,16 @@ export default function CreateBlog() {
         console.log("Success:", data);
       })
       .catch(error => {
-        console.error("Error:", error.message); // Add error message for debugging
+        console.error("Error:", error.message); 
       });
       navigate("/home");
   };
 
   return (
-    <form className="w-full max-w-4xl mx-auto py-12 md:py-16 lg:py-20 px-4 md:px-6 lg:px-8" onSubmit={handleSubmit}>
+    <form
+      className={`w-full max-w-4xl mx-auto py-12 md:py-16 lg:py-20 px-4 md:px-6 lg:px-8 ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}
+      onSubmit={handleSubmit}
+    >
       <div className="space-y-8 lg:space-y-12">
         <div className="animate-fade-in-up">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
@@ -93,10 +87,11 @@ export default function CreateBlog() {
             <p className="text-muted-foreground">Provide the description of your blog post.</p>
             <FroalaEditorComponent
               tag='textarea'
-              className="w-full min-h-[150px]"
+              className="w-full min-h-[150px] dark:bg-gray-900 dark:text-white "
               onModelChange={(content) => setDescription(content)}
               config={{
-                imageUpload: false, // Disable built-in image upload
+                imageUpload: false,
+                theme: theme === "dark" ? "eg-dark-theme" : "default" // Set Froala theme
               }}
             />
           </div>
@@ -107,7 +102,7 @@ export default function CreateBlog() {
             A captivating summary that highlights the key points of your blog post with the below points.
           </p>
           <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Card className="group hover:bg-primary hover:text-primary-foreground transition-colors duration-300">
+            <Card className="group hover:bg-primary hover:text-primary-foreground transition-colors duration-300 dark:bg-gray-800 dark:text-white">
               <CardHeader>
                 <CardTitle>Engaging Content</CardTitle>
               </CardHeader>
@@ -117,7 +112,7 @@ export default function CreateBlog() {
                 </p>
               </CardContent>
             </Card>
-            <Card className="group hover:bg-primary hover:text-primary-foreground transition-colors duration-300">
+            <Card className="group hover:bg-primary hover:text-primary-foreground transition-colors duration-300 dark:bg-gray-800 dark:text-white">
               <CardHeader>
                 <CardTitle>Thoughtful Insights</CardTitle>
               </CardHeader>
@@ -127,7 +122,7 @@ export default function CreateBlog() {
                 </p>
               </CardContent>
             </Card>
-            <Card className="group hover:bg-primary hover:text-primary-foreground transition-colors duration-300">
+            <Card className="group hover:bg-primary hover:text-primary-foreground transition-colors duration-300 dark:bg-gray-800 dark:text-white">
               <CardHeader>
                 <CardTitle>Visually Appealing</CardTitle>
               </CardHeader>
@@ -143,9 +138,11 @@ export default function CreateBlog() {
           <Button className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-300">
             Publish this blog
           </Button>
-          <Button className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-300 mr-6" onClick={()=>navigate("/aigeneratedpost")} >Generate From AI   <Sparkles /></Button>
+          <Button className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-300 mr-6" onClick={()=>navigate("/aigeneratedpost")} >
+            Generate From AI
+            <Sparkles />
+          </Button>
         </div>
-       
       </div>
     </form>
   );

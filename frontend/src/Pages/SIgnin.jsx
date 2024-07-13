@@ -27,47 +27,47 @@ export default function Signin() {
   };
 
   return (
-    <div className="flex h-screen w-full items-start justify-center mt-6 bg-background">
-      <div className="w-full mt-16 max-w-md rounded-2xl bg-card p-6 shadow-xl transition-all duration-300 hover:shadow-2xl">
+    <div className="flex h-screen w-full items-start justify-center mt-6 bg-background dark:bg-black">
+      <div className="w-full mt-16 max-w-md rounded-2xl bg-card dark:bg-gray-800 p-6 shadow-xl transition-all duration-300 hover:shadow-2xl">
         <div className="mb-6 flex flex-col items-center justify-center">
           <div className="flex items-center mb-2">
             <FlameIcon className="h-6 w-6" />
-            <span className="ml-2 text-2xl font-bold">FUSION</span>
+            <span className="ml-2 text-2xl font-bold dark:text-white">FUSION</span>
           </div>
-          <p className="text-sm text-muted-foreground">Enter Your Username</p>
-          <p className="text-sm text-muted-foreground">Password is "password"</p>
+          <p className="text-sm text-muted-foreground dark:text-gray-400">Enter Your Username</p>
+          <p className="text-sm text-muted-foreground dark:text-gray-400">Password is "password"</p>
         </div>
         <form className="space-y-4" onSubmit={onHandleClick}>
           <div className="grid gap-2">
-            <Label htmlFor="username">Username</Label>
+            <Label htmlFor="username" className="dark:text-gray-400">Username</Label>
             <Input
               value={formData.username}
               onChange={(e) => setFormData({ username: e.target.value })}
               type="text"
               id="username"
               placeholder="Enter your username"
-              className="h-12"
+              className="h-12 dark:bg-gray-700 dark:text-white"
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password" className="dark:text-gray-400">Password</Label>
             <Input
               value={formData.password}
               onChange={(e) => setFormData({ password: e.target.value })}
               type="password"
               id="password"
               placeholder="Enter your password"
-              className="h-12"
+              className="h-12 dark:bg-gray-700 dark:text-white"
             />
           </div>
           <Button
             type="submit"
-            className="w-full animate-bounce bg-primary text-primary-foreground"
+            className="w-full animate-bounce bg-primary text-primary-foreground dark:bg-gray-900 dark:text-white"
           >
             Sign In
           </Button>
         </form>
-       
+        {errorMessage && <p className="mt-4 text-center text-red-600 dark:text-red-400">{errorMessage}</p>}
       </div>
     </div>
   );
@@ -86,6 +86,7 @@ function FlameIcon(props) {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
+      className="text-current dark:text-white"
     >
       <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
     </svg>

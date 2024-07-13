@@ -1,7 +1,7 @@
 // src/Pages/BlogFeed.jsx
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import Skeleton from '@/components/component/Skeleton';
 const BlogFeed = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,7 +18,8 @@ const BlogFeed = () => {
         setPosts(data);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching blog posts:', error);
+        // console.error('Error fetching blog posts:', error);
+        <Skeleton />
         setError(error);
         setLoading(false);
       }
@@ -26,8 +27,8 @@ const BlogFeed = () => {
     fetchBlogPosts();
   }, []); // This empty dependency array means this effect runs once when the component mounts
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error loading posts: {error.message}</p>;
+  if (loading) return <Skeleton />;
+  if (error) return  <p>Error loading posts: {error.message}</p>;
 
   return (
     <div className="container mx-auto px-4 py-12 md:px-6 lg:py-16">
