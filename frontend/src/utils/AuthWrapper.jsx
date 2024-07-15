@@ -20,7 +20,7 @@ export const AuthWrapper = () => {
 
   const login = (userName, password) => {
     return new Promise((resolve, reject) => {
-      if (password === "password") {
+      if (password === "FUSION") {
         const loggedInUser = { name: userName, isAuthenticated: true };
         setUser(loggedInUser);
         localStorage.setItem("user", JSON.stringify(loggedInUser));
