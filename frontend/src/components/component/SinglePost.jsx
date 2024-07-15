@@ -43,7 +43,7 @@ const SinglePost = () => {
     fetchPost();
   }, [id]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Skeleton />;
   if (error) return <p>Error loading post: {error.message}</p>;
   if (!post) return <p>No post found</p>;
 
