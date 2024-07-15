@@ -35,7 +35,7 @@ export default function Signin() {
             <span className="ml-2 text-2xl font-bold dark:text-white">FUSION</span>
           </div>
           <p className="text-sm text-muted-foreground dark:text-gray-400">Enter Your Username</p>
-          <p className="text-sm text-muted-foreground dark:text-gray-400">Password is "password"</p>
+          <p className="text-sm text-muted-foreground dark:text-gray-400">Password is "FUSION"</p>
         </div>
         <form className="space-y-4" onSubmit={onHandleClick}>
           <div className="grid gap-2">
