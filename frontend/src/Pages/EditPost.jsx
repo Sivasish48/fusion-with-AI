@@ -18,7 +18,7 @@ const EditPost = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/posts/${id}`);
+        const response = await fetch(`https://fusion-with-ai-backend.vercel.app/api/posts/${id}`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -36,7 +36,7 @@ const EditPost = () => {
   const handleImageUpload = async (file) => {
     const formData = new FormData();
     formData.append("file", file);
-    const response = await fetch("http://localhost:3000/upload_image", {
+    const response = await fetch("https://fusion-with-ai-backend.vercel.app/upload_image", {
       method: "POST",
       body: formData,
     });
@@ -61,7 +61,7 @@ const EditPost = () => {
     };
 
     try {
-      const response = await fetch(`http://localhost:3000/api/posts/${id}`, {
+      const response = await fetch(`https://fusion-with-ai-backend.vercel.app/api/posts/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

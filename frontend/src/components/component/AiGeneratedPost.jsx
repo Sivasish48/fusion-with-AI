@@ -16,7 +16,7 @@ export function AiGeneratedPost() {
     setError('');
     try {
       console.log('Sending request with prompt:', prompt);
-      const response = await axios.post('http://localhost:3000/api/prompt-ai-generate', { prompt });
+      const response = await axios.post('https://fusion-with-ai-backend.vercel.app/api/prompt-ai-generate', { prompt });
       const generatedDescription = response.data;
       console.log('Received response:', generatedDescription);
       setDescription(generatedDescription);

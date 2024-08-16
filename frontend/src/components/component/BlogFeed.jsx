@@ -10,7 +10,7 @@ const BlogFeed = () => {
   useEffect(() => {
     const fetchBlogPosts = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/posts');
+        const response = await fetch('https://fusion-with-ai-backend.vercel.app/api/posts');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

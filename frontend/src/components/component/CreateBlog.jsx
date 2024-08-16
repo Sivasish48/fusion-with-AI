@@ -19,7 +19,7 @@ export default function CreateBlog() {
   const handleImageUpload = async (file) => {
     const formData = new FormData();
     formData.append("file", file);
-    const response = await fetch("http://localhost:3000/upload_image", { 
+    const response = await fetch("https://fusion-with-ai-backend.vercel.app/upload_image", { 
       method: "POST",
       body: formData,
     });
@@ -42,7 +42,7 @@ export default function CreateBlog() {
     const data = { title, description: updatedDescription };
 
     console.log("Data being sent to backend:", JSON.stringify(data)); 
-    fetch("http://localhost:3000/submit_blog", {
+    fetch("https://fusion-with-ai-backend.vercel.app/submit_blog", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
