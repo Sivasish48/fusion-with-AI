@@ -25,7 +25,7 @@ export default function Auth() {
             <HoverBorderGradient
               containerClassName="rounded-full w-80 flex justify-center"
               as="button"
-              className="dark:bg-black bg-white text-black dark:text-white flex items-center justify-center space-x-2 border border-black rounded-full hover:bg-black hover:text-white transition duration-300"
+              className="dark:bg-black  text-white dark:text-white flex items-center justify-center space-x-2 border border-black hover:bg-black hover:text-white transition duration-300"
               onClick={() => navigate('/signin')}
             >
               Login
@@ -33,7 +33,7 @@ export default function Auth() {
             <HoverBorderGradient
               containerClassName="rounded-full w-80 flex justify-center"
               as="button"
-              className="dark:bg-black bg-white text-black dark:text-white flex items-center justify-center space-x-2 border border-black rounded-full hover:bg-black hover:text-white transition duration-300"
+              className="dark:bg-black  text-white dark:text-white flex items-center justify-center space-x-2 border border-black hover:bg-black hover:text-white transition duration-300"
               onClick={() => navigate('/home')}
             >
               Or Enter As Guest
